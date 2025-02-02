@@ -7,7 +7,6 @@
 /////////////////////////////////////////////////
 // Data
 
-// DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -26,7 +25,7 @@ const account1 = {
     '2025-01-31T10:51:36.790Z'
   ],
   currency: 'EUR',
-  locale: 'pt-PT' // de-DE
+  locale: 'pt-PT'
 };
 
 const account2 = {
@@ -81,6 +80,8 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+
+// Displays the user movements
 const displayMovements = function(acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -111,12 +112,14 @@ const displayMovements = function(acc, sort = false) {
 };
 
 
+// Displays the account balance
 const calcDisplayBalance = function(acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = formatCurrency(acc.balance, acc.locale, acc.currency);
 };
 
 
+// Displays the user summary
 const calcDisplaySummary = function(acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
@@ -139,7 +142,7 @@ const calcDisplaySummary = function(acc) {
   labelSumInterest.textContent = formatCurrency(interest, acc.locale, acc.currency);
 };
 
-
+ // Creates the usernames for the pre-defined users of the app
 const createUsernames = function(accs) {
   accs.forEach(function(acc) {
     acc.username = acc.owner
@@ -152,6 +155,7 @@ const createUsernames = function(accs) {
 createUsernames(accounts);
 
 
+// Updates the UI
 const updateUI = function(acc) {
   // Adds the current date label
   const now = new Date();
@@ -175,6 +179,7 @@ const updateUI = function(acc) {
 let currentAccount, timer;
 
 
+// Login Button
 btnLogin.addEventListener('click', function(e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -206,6 +211,7 @@ btnLogin.addEventListener('click', function(e) {
 });
 
 
+// Transfer button
 btnTransfer.addEventListener('click', function(e) {
   e.preventDefault();
   const amount = Number(inputTransferAmount.value);
@@ -235,6 +241,7 @@ btnTransfer.addEventListener('click', function(e) {
 });
 
 
+// Loan button
 btnLoan.addEventListener('click', function(e) {
   e.preventDefault();
 
@@ -255,6 +262,7 @@ btnLoan.addEventListener('click', function(e) {
 });
 
 
+// Close account button
 btnClose.addEventListener('click', function(e) {
   e.preventDefault();
 
@@ -279,6 +287,7 @@ btnClose.addEventListener('click', function(e) {
 });
 
 
+// Sorting button
 let sorted = false;
 btnSort.addEventListener('click', function(e) {
   e.preventDefault();
@@ -286,6 +295,8 @@ btnSort.addEventListener('click', function(e) {
   sorted = !sorted;
 });
 
+
+//////////////////////////////////////////////////////////
 // FORMATTING TIME, DATES AND CURRENCIES
 
 // Returns a formatted date string
@@ -294,6 +305,7 @@ const formattedDate = function(date, locale) {
     date = new Date();
   }
 
+  // Calculates the days passed between dates
   const calcDaysPassed = (date1, date2) => {
     return Math.floor(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
   };
@@ -312,6 +324,7 @@ const formattedDate = function(date, locale) {
 };
 
 
+// Formats a currency according to the locale and specified currency
 const formatCurrency = function(value, locale, currency) {
   return new Intl.NumberFormat(locale,
     {
@@ -321,6 +334,7 @@ const formatCurrency = function(value, locale, currency) {
 };
 
 
+// Logout timer
 const startLogOutTimer = function() {
   // We define the funcion before and invoke it in order to prevent
   // the 1s delay
